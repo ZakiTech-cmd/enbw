@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import create_engine, Column, Integer, String, StaticPool
+from sqlalchemy import create_engine, Column, String, StaticPool
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from pydantic import BaseModel
