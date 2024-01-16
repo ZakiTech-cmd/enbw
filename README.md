@@ -5,7 +5,7 @@
 a) To deploy the application using Docker, use the provided `run_now.sh` script:
 
 ```bash
-*./run_now.sh*
+```./run_now.sh```
 
 This script will build the Docker image named enbw-api and run a container named enbw-api on port 8000.
 
