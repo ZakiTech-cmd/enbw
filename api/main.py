@@ -1,9 +1,10 @@
 import re
+import uuid
 from typing import List
 import logging
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
-from models import Event, SessionLocal, EventCreate, EventResponse
+from api.models import Event, SessionLocal, EventCreate, EventResponse
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -32,7 +33,10 @@ def store_event(event_bucket: str, event_data: EventCreate, db: Session = Depend
         if not ALLOWED_BUCKET_PATTERN.match(event_bucket):
             raise HTTPException(status_code=422, detail="Invalid Event Bucket name")
 
-        db_event = Event(title=event_data.title, message=event_data.message, bucket=event_bucket)
+        # Generează un UUID nou
+        new_uuid = str(uuid.uuid4())
+
+        db_event = Event(id=new_uuid, title=event_data.title, message=event_data.message, bucket=event_bucket)
         db.add(db_event)
         db.commit()
         db.refresh(db_event)
@@ -47,17 +51,17 @@ def store_event(event_bucket: str, event_data: EventCreate, db: Session = Depend
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
-@app.get("/v1/{event_bucket}/", response_model=List[int])
+@app.get("/v1/{event_bucket}/", response_model=List[str])
 def get_event_ids(event_bucket: str, db: Session = Depends(get_db)):
     # Logare acces la endpoint
     logger.info(f"GET request to /v1/{event_bucket}/")
 
     event_ids = db.query(Event.id).filter(Event.bucket == event_bucket).all()
-    return [event_id[0] for event_id in event_ids]
+    return [str(event_id[0]) for event_id in event_ids]
 
 
 @app.get("/v1/{event_bucket}/{event_id}", response_model=EventResponse)
-def get_event_details(event_bucket: str, event_id: int, db: Session = Depends(get_db)):
+def get_event_details(event_bucket: str, event_id: str, db: Session = Depends(get_db)):
     # Logare acces la endpoint
     logger.info(f"GET request to /v1/{event_bucket}/{event_id}")
 

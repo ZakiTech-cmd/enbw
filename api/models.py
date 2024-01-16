@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy import create_engine, Column, Integer, String, StaticPool
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
@@ -12,7 +14,7 @@ Base = declarative_base()
 class Event(Base):
     __tablename__ = 'events'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String, primary_key=True, default=str(uuid.uuid4()), index=True)
     title = Column(String, index=True)
     message = Column(String)
     bucket = Column(String, index=True)
@@ -34,7 +36,7 @@ class EventCreate(EventBase):
 
 
 class EventResponse(BaseModel):
-    id: int
+    id: str
     title: str
     message: str
     bucket: str
