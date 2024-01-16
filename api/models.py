@@ -1,10 +1,10 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, StaticPool
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from pydantic import BaseModel
 
-DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+DATABASE_URL = "sqlite:///:memory:"
+engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False}, poolclass=StaticPool)
 
 Base = declarative_base()
 
