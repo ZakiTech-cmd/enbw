@@ -4,7 +4,7 @@ import logging
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from pydantic import ValidationError
-from models import Event, SessionLocal, EventCreate, EventResponse
+from api.models import Event, SessionLocal, EventCreate, EventResponse
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
