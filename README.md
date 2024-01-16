@@ -11,7 +11,7 @@ This script will build the Docker image named enbw-api and run a container named
 
 Access the Swagger API documentation at http://localhost:8000/docs to test the endpoints.
 
-b) Local Development without Docker:
+##Local Development without Docker:
 
 To run the application locally without Docker, make the following changes:
 
